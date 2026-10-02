@@ -1,0 +1,10 @@
+.idea
+.vscode
+android/
+draft/
+ios/
+web/
+windows/
+.metadata
+README.md
+build/
