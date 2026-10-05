@@ -10,3 +10,4 @@ README.md
 build/
 AGENTS.md
 docs/
+.dart_tool/
