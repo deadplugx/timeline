@@ -9,7 +9,7 @@ class HomeContent extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        const Center(child: TimelineBaseline()),
+        const TimelineBaseline(),
         Positioned(
           right: 22,
           bottom: 10,

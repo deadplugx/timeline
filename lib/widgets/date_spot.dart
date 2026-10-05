@@ -9,6 +9,10 @@ class DateSpot extends StatelessWidget {
   });
 
   static const double width = 64;
+  static double axisOffset(BuildContext context) {
+    final labelHeight = MediaQuery.textScalerOf(context).scale(11) * 1.4;
+    return labelHeight + 8 + 4;
+  }
 
   final DateTime time;
   final bool isSelected;
@@ -19,6 +23,7 @@ class DateSpot extends StatelessWidget {
     final color = Theme.of(context).colorScheme.onSurface;
     final isDayStart = time.hour == 0 && time.minute == 0;
     final dotSize = isDayStart ? 8.0 : 6.0;
+    final labelHeight = MediaQuery.textScalerOf(context).scale(11) * 1.4;
 
     final date =
         '${time.day.toString().padLeft(2, '0')}.'
@@ -28,13 +33,35 @@ class DateSpot extends StatelessWidget {
         '${time.hour.toString().padLeft(2, '0')}:'
         '${time.minute.toString().padLeft(2, '0')}';
 
+    final labelStyle = TextStyle(
+      color: color,
+      fontSize: 11,
+      height: 1.4,
+      fontWeight: FontWeight.w400,
+    );
+
     return Opacity(
       opacity: isSelected ? 1 : 0.75,
       child: SizedBox(
         width: width,
-        height: 48,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
+            // место под дату сохраняется у часовых точек
+            SizedBox(
+              height: labelHeight,
+              child: isDayStart
+                  ? Center(
+                      child: Text(
+                        date,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: labelStyle.copyWith(fontWeight: FontWeight.w700),
+                      ),
+                    )
+                  : null,
+            ),
+            const SizedBox(height: 8),
             SizedBox(
               height: 8,
               child: Center(
@@ -52,13 +79,19 @@ class DateSpot extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            if (showLabel)
-              Text(
-                isDayStart ? date : clock,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: color, fontSize: 11),
-              ),
+            SizedBox(
+              height: labelHeight,
+              child: isDayStart || showLabel
+                  ? Center(
+                      child: Text(
+                        clock,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: labelStyle,
+                      ),
+                    )
+                  : null,
+            ),
           ],
         ),
       ),
